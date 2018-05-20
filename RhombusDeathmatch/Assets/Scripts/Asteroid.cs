@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Asteroid : MonoBehaviour {
 
-    private float slowTime = 0.5f;
-    private float slowAmount = 1.0f;
+    //private float slowTime = 0.5f;
+    //private float slowAmount = 1.0f;
     private Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
     
     private Renderer rend;
@@ -29,16 +29,22 @@ public class Asteroid : MonoBehaviour {
     void OnHit()
     {
         rend.material.SetColor("_Color",new Color(255,255,255));
+        rigidbody.AddForce(impactVelocity);
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.LogError("ashfaklsjdfk77");
+        //Debug.LogError("ashfaklsjdsfk77");
         if(collision.gameObject.GetComponent<Bullet>() is Bullet)
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            impactVelocity = bullet.rigidbody.velocity;
+            impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
+
+            //impactVelocity.x = bullet.moveSpeed * bullet.moveDirection.normalized.x;
+            //impactVelocity.y = bullet.moveSpeed *  bullet.moveDirection.normalized.y;
+
+            bullet.moveSpeed = 0;
             OnHit();
             //StartCoroutine(SlowTime());
         }

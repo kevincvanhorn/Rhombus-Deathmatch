@@ -42,7 +42,6 @@ public class PShip : MonoBehaviour {
 
     public void LaunchBulletSingle(Vector2 swipeDirection)
     {
-        Debug.Log(activeBullet);
         if (activeBullet == null)
         {
             activeBullet = (Bullet)Instantiate(bulletPrefab, transform.position, transform.rotation);

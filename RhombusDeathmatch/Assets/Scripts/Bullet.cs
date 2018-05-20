@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -8,8 +7,7 @@ public class Bullet : MonoBehaviour {
     public float moveDist = 5;
     public Vector3 moveDirection;
     public new Rigidbody2D rigidbody;
-
-
+    
     private float lifeTime;
     private Renderer rend;
 
@@ -33,10 +31,15 @@ public class Bullet : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
+        if(collision.gameObject.GetComponent<AGravityField>() is AGravityField)
+        {
+            moveSpeed *= 2;
+        }
+        else if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
         {
             OnHitAsteroid();
         }
+        
     }
 
     private void OnHitAsteroid()
@@ -44,13 +47,12 @@ public class Bullet : MonoBehaviour {
         /* Stop Asteroid in place & let trail catch up. */
         StopCoroutine(DestroyOnDelay());
         rend.enabled = false;
-        moveSpeed = 0;
+        //moveSpeed = 0;
     }
 
     private IEnumerator DestroyOnDelay()
     {
         yield return new WaitForSeconds(lifeTime);
-
         Destroy(gameObject);
     }
     private void OnDestroy()

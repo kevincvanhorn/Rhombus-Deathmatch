@@ -289,6 +289,7 @@
     <Compile Include="Assets\Materials\SpriteGlow\Kino\Bloom\Bloom.cs" />
     <Compile Include="Assets\Materials\SpriteGlow\SpriteGlow.cs" />
     <Compile Include="Assets\Materials\SpriteGlow\SpriteGlowMaterial.cs" />
+    <Compile Include="Assets\Scripts\AGravityField.cs" />
     <Compile Include="Assets\Scripts\Asteroid.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />

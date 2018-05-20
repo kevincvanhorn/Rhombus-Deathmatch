@@ -232,4 +232,4 @@ MonoBehaviour:
   moveSpeed: 5
   moveDist: 15
   moveDirection: {x: 1, y: 1, z: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 50763328432988872}
