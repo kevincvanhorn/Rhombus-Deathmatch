@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhombusDeathmatch", "RhombusDeathmatch.csproj", "{550D2505-2EF7-0F0B-DE0A-4250B85F376B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhombusDeathmatch.Editor", "RhombusDeathmatch.Editor.csproj", "{0F78F9BC-3C3E-BD8C-D64A-80AB7D9B71DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{550D2505-2EF7-0F0B-DE0A-4250B85F376B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{550D2505-2EF7-0F0B-DE0A-4250B85F376B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{550D2505-2EF7-0F0B-DE0A-4250B85F376B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{550D2505-2EF7-0F0B-DE0A-4250B85F376B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F78F9BC-3C3E-BD8C-D64A-80AB7D9B71DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F78F9BC-3C3E-BD8C-D64A-80AB7D9B71DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F78F9BC-3C3E-BD8C-D64A-80AB7D9B71DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F78F9BC-3C3E-BD8C-D64A-80AB7D9B71DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
