@@ -5,9 +5,7 @@ using UnityEngine;
 public enum GameState {
     Waiting,
     BulletTurn,
-    MoveTurn,
-    ShipsMoving,
-    BulletsMoving
+    MoveTurn    
 }
 
 public class GameManager : MonoBehaviour {

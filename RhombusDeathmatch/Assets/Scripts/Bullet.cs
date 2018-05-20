@@ -28,14 +28,23 @@ public class Bullet : MonoBehaviour {
         rigidbody.MovePosition(new Vector3(pos.x + deltaX, pos.y + deltaY, pos.z));
     }
 
+    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
+        {
+            //OnHitAsteroid();
+        }
+    }
+
     private IEnumerator DestroyDelay()
     {
         yield return new WaitForSeconds(lifeTime);
         Destroy(gameObject);
     }
-
     private void OnDestroy()
     {
-        
+        StopAllCoroutines();   
     }
 }

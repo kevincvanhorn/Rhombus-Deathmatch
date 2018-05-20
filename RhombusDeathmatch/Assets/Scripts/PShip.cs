@@ -12,9 +12,11 @@ public class PShip : MonoBehaviour {
     public Bounds bounds;
 
     private Bullet activeBullet = null;
+    private bool hasBulletSpawned = false;
+    private bool canBulletChangeDir = true;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         collider = GetComponent<Collider2D>();
         bounds = collider.bounds;
 
@@ -22,14 +24,19 @@ public class PShip : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
 	}
 
     public void OnSimpleSwipe(Vector2 swipeDirection)
     {
         if(GameManager.state == GameState.BulletTurn)
         {
-            LaunchBulletSingle(swipeDirection);
+            if (hasBulletSpawned && canBulletChangeDir)
+            {
+                activeBullet.moveDirection = swipeDirection;
+                canBulletChangeDir = false;
+            }
+            else
+                LaunchBulletSingle(swipeDirection);
         }
     }
 
@@ -40,6 +47,9 @@ public class PShip : MonoBehaviour {
         {
             activeBullet = (Bullet)Instantiate(bulletPrefab, transform.position, transform.rotation);
             activeBullet.moveDirection = swipeDirection;
+
+            hasBulletSpawned = true;
+            canBulletChangeDir = true;
         }
     }
 }

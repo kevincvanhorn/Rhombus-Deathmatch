@@ -26,8 +26,8 @@ public class PInputController : MonoBehaviour {
         /*Mouse Input: */
         if (Input.GetMouseButtonDown(0))
         {
-            if (IsOriginValid(Input.mousePosition))
-                touchOrigin = Input.mousePosition;
+            //if (IsOriginValid(Input.mousePosition))
+            touchOrigin = Input.mousePosition;
         }
         else if (Input.GetMouseButtonUp(0) && touchOrigin.x != -1)
         {
@@ -44,8 +44,8 @@ public class PInputController : MonoBehaviour {
             // Check if this is the beginning of a touch:
             if (touchCur.phase == TouchPhase.Began)
             {
-                if(isOriginValid(touchCur.position))
-                    touchOrigin = touchCur.position;
+                //if(isOriginValid(touchCur.position))
+                touchOrigin = touchCur.position;
             }
             // Check if touch has ended, starting from inside the screen boundary:
             else if(touchCur.phase == TouchPhase.Ended && touchOrigin.x >= 0)
