@@ -7,6 +7,8 @@ public class Asteroid : MonoBehaviour {
 
     private float slowTime = 0.5f;
     private float slowAmount = 1.0f;
+    private Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
+    
     private Renderer rend;
     private new Rigidbody2D rigidbody; 
 
@@ -30,17 +32,19 @@ public class Asteroid : MonoBehaviour {
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogError("ashfaklsjdfk77");
+        //Debug.LogError("ashfaklsjdfk77");
         if(collision.gameObject.GetComponent<Bullet>() is Bullet)
         {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            impactVelocity = bullet.rigidbody.velocity;
             OnHit();
             //StartCoroutine(SlowTime());
         }
     }
 
-    IEnumerator SlowTime()
+    /*IEnumerator SlowTime()
     {
         Debug.LogError("Before: " + Time.timeScale);
 
@@ -53,5 +57,5 @@ public class Asteroid : MonoBehaviour {
         //Time.fixedDeltaTime = 0.2f * Time.timeScale;
         Debug.LogError("After: " + Time.timeScale);
 
-    }
+    }*/
 }
