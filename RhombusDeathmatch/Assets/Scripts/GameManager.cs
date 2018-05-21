@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     /* Public Vars: */
     [HideInInspector]
     public PShip player;
+    public bool allowInput = true;
 
     /* Accessor Vars: */
     public static GameManager Instance { get { return _instance; } }
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour {
     private GameState _curGameState = GameState.BulletTurn;
     private GameState[] turnOrder;
     private int curTurn = -1;
+    private bool canTransition = true;
+    private int transitionSemaphore = 0;
 
     private void Awake()
     {
@@ -48,10 +51,38 @@ public class GameManager : MonoBehaviour {
     private void OnDestroy() { if (this == _instance) { _instance = null; } }
 
 
+
     public void NextTurn()
     {
-        curTurn = (curTurn < turnOrder.Length) ? curTurn + 1 : 0;
-        _curGameState = turnOrder[curTurn];
-        UIManager.ShowTurnText();
+        if (!canTransition)
+        {
+            transitionSemaphore--;
+            if (transitionSemaphore <= 0) canTransition = true;
+        }
+        
+
+        if (canTransition)
+        {
+            transitionSemaphore = 0;
+            curTurn = (curTurn < turnOrder.Length - 1) ? curTurn + 1 : 0;
+            _curGameState = turnOrder[curTurn];
+            UIManager.ShowTurnText();
+        }         
+    }
+
+    public void RequestRestrictInput()
+    {
+        allowInput = false;
+    }
+    public void RequestAllowInput()
+    {
+        allowInput = true;
+    }
+
+    /* When a player bullet hits an asteroid. */
+    public void DelayAttackTransition()
+    {
+        canTransition = false;
+        transitionSemaphore = 1; // When 0, can transition.
     }
 }

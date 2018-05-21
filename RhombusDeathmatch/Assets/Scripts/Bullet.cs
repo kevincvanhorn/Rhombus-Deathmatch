@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour {
     public float moveDist = 5;
     public Vector3 moveDirection;
     public new Rigidbody2D rigidbody;
+
+    Coroutine thisCoroutine = null;
     
     private float lifeTime;
     private Renderer rend;
@@ -17,7 +19,7 @@ public class Bullet : MonoBehaviour {
         rend = GetComponent<Renderer>();
         lifeTime = moveDist / moveSpeed; // t = d/r
 
-        StartCoroutine(DestroyOnDelay());
+        thisCoroutine = StartCoroutine(DestroyViaLifeTime());
 	}
 
     private void Update()
@@ -45,14 +47,24 @@ public class Bullet : MonoBehaviour {
     private void OnHitAsteroid()
     {
         /* Stop Asteroid in place & let trail catch up. */
-        StopCoroutine(DestroyOnDelay());
-        rend.enabled = false;
+        StopCoroutine(thisCoroutine);
+        rend.enabled = false; 
         //moveSpeed = 0;
+
+        GameManager.Instance.DelayAttackTransition();
+        StartCoroutine(DestroyOnDelay(1f)); // delay for trail to execute.
     }
 
-    private IEnumerator DestroyOnDelay()
+    private IEnumerator DestroyOnDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
+    }
+
+    private IEnumerator DestroyViaLifeTime()
     {
         yield return new WaitForSeconds(lifeTime);
+        GameManager.Instance.NextTurn(); // Attack Missed all Asteroids: Should transition.
         Destroy(gameObject);
     }
     private void OnDestroy()

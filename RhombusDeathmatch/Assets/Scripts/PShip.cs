@@ -8,12 +8,15 @@ using UnityEngine;
 public class PShip : MonoBehaviour {
 
     public Bullet bulletPrefab;
-    public float moveForce = 50;
+    //public float moveForce = 50;
+    public float moveSpeed = 10;
 
     [HideInInspector]
     public new Collider2D collider;
     [HideInInspector]
     public Bounds bounds;
+    private int numBulletsPerTurn = 1; // The number of bullets allowed in an attack phase
+    private int numBulletsSpawned = 0;
 
 
     private Rigidbody2D rigidbody;
@@ -34,35 +37,69 @@ public class PShip : MonoBehaviour {
 
     }
 
-    public void OnSimpleSwipe(Vector2 swipeDirection)
+    public void OnSimpleSwipe(Vector2 swipeDirection, Vector2 endpoint)
     {
         if(GameManager.State == GameState.BulletTurn)
         {
-            if (hasBulletSpawned && canBulletChangeDir)
+            Debug.LogError("BULLET TURN");
+            if (numBulletsSpawned == 1 && canBulletChangeDir)
             {
                 activeBullet.moveDirection = swipeDirection;
                 canBulletChangeDir = false;
             }
-            else
+            else if(numBulletsSpawned < numBulletsPerTurn)
+            {
+                numBulletsSpawned++;
                 LaunchBulletSingle(swipeDirection);
+            }
+                
         }
         else if(GameManager.State == GameState.MoveTurn)
         {
-            rigidbody.AddForce(moveForce*swipeDirection);
+            /* Start Movement & Freeze input. */
+            GameManager.Instance.RequestRestrictInput();
+            Debug.Log("Restrict");
+            //rigidbody.AddForce(moveForce*swipeDirection); // Impulse
+            StartCoroutine(MoveTo(swipeDirection, endpoint));
+
+            /* Reset Attack vars. */
+            numBulletsSpawned = 0;
         }
     }
 
     public void LaunchBulletSingle(Vector2 swipeDirection)
     {
-            if (activeBullet == null)
+        if (activeBullet == null)
         {
+            Debug.LogError("Bullet Spawned");
             activeBullet = (Bullet)Instantiate(bulletPrefab, transform.position, transform.rotation);
             activeBullet.moveDirection = swipeDirection;
 
-            hasBulletSpawned = true;
             canBulletChangeDir = true;
         }
     }
 
+    IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
+    {
+        target = Camera.main.ScreenToWorldPoint(target); // For using mouse.
+        Vector3 pos = rigidbody.position;
+        float moveDist = (target - (Vector2)pos).magnitude;
+        float distTraveled = 0f;
+
+        while (distTraveled < moveDist)
+        {
+            pos = rigidbody.position;
+            float deltaX = moveSpeed * Time.deltaTime * moveDirection.normalized.x;
+            float deltaY = moveSpeed * Time.deltaTime * moveDirection.normalized.y;
+            Vector3 moveVector = new Vector3(pos.x + deltaX, pos.y + deltaY, pos.z);
+            rigidbody.MovePosition(moveVector);
+            distTraveled += (new Vector2(deltaX, deltaY)).magnitude;
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.Instance.NextTurn(); // At end of movement
+        GameManager.Instance.RequestAllowInput();
+        Debug.Log("Allow");
+
+    }
 
 }

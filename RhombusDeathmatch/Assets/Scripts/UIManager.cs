@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour {
     private Outline screenTextOutline;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         UICanvas.SetActive(true);
         screenText = screenTextObj.GetComponent<Text>();
         screenTextOutline = screenTextObj.GetComponent<Outline>();
@@ -23,14 +23,14 @@ public class UIManager : MonoBehaviour {
 
     public void ShowTurnText()
     {
-        if(GameManager.State == GameState.MoveTurn)
+        if (GameManager.State == GameState.MoveTurn)
         {
             screenText.text = "MOVE";
             ShowText(screenTextObj, screenTextOutline);
         }
         else if(GameManager.State == GameState.BulletTurn)
         {
-            screenText.text = "Attack";
+            screenText.text = "ATTACK";
             ShowText(screenTextObj, screenTextOutline);
         }
     }
@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour {
     /* Executes an effect on the input text. */
     IEnumerator DoTextFocusEffect(GameObject textObj, Outline outline)
     {
+        //GameManager.Instance.RequestRestrictInput();
         textObj.SetActive(true);
         outline.effectDistance = new Vector2(6, -1);
         while (outline.effectDistance.x > 1)
@@ -53,5 +54,6 @@ public class UIManager : MonoBehaviour {
         outline.effectDistance = new Vector2(1, -1);
         yield return new WaitForSeconds(0.5f);
         textObj.SetActive(false);
+        //GameManager.Instance.RequestAllowInput();
     }
 }

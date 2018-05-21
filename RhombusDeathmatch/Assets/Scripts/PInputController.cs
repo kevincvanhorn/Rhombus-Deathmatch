@@ -25,13 +25,22 @@ public class PInputController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+        if (GameManager.Instance.allowInput) {
+            #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+                    UpdateWebplayer();
+            #else
+                    UpdatePhone();
+            #endif
+        }
+    }
+
+    void UpdateWebplayer()
+    {
         /*Mouse Input: */
         if (Input.GetMouseButtonDown(0))
         {
-            if(GameManager.State == GameState.MoveTurn)
+            if (GameManager.State == GameState.MoveTurn)
             {
-
                 if (IsOriginValid(Input.mousePosition))
                 {
                     touchOrigin = Input.mousePosition;
@@ -44,16 +53,15 @@ public class PInputController : MonoBehaviour {
         else if (Input.GetMouseButtonUp(0) && touchOrigin.x != -1)
         {
             touchEnd = Input.mousePosition;
-            RequestPlayerMove(touchEnd - touchOrigin);
+            RequestPlayerMove(touchEnd - touchOrigin, touchEnd);
             touchOrigin.x = -1;
 
-            if(GameManager.State == GameState.MoveTurn)
-            {
                 EndLineRender();
-            }
         }
+    }
 
-#else
+    void UpdatePhone()
+    {
         /* Mobile Input: */
         if (Input.touchCount > 0)
         {
@@ -65,14 +73,13 @@ public class PInputController : MonoBehaviour {
                 touchOrigin = touchCur.position;
             }
             // Check if touch has ended, starting from inside the screen boundary:
-            else if(touchCur.phase == TouchPhase.Ended && touchOrigin.x >= 0)
+            else if (touchCur.phase == TouchPhase.Ended && touchOrigin.x >= 0)
             {
                 touchEnd = touchCur.position;
-                RequestPlayerMove(touchEnd - touchOrigin);
+                RequestPlayerMove(touchEnd - touchOrigin, touchEnd);
                 touchOrigin.x = -1;
             }
         }
-#endif
     }
 
     /* Return true if the position is within the bounds of the Player. */
@@ -88,16 +95,16 @@ public class PInputController : MonoBehaviour {
         return false;
     }
 
-    private void RequestPlayerMove(Vector2 swipeDirection)
+    private void RequestPlayerMove(Vector2 swipeDirection, Vector2 target)
     {
 
         if (player != null && swipeDirection != Vector2.zero)
         {
-            player.OnSimpleSwipe(swipeDirection);
+            player.OnSimpleSwipe(swipeDirection, target);
         }
     }
 
-    /* Helper Line on Movement Input. */
+    /* Helper Line on Movement Input. */    
     private void DrawMoveFromPlayer(Vector2 origin)
     {
         lineRenderer.enabled = true;

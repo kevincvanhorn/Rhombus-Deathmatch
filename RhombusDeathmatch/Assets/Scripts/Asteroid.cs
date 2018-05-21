@@ -10,7 +10,7 @@ public class Asteroid : MonoBehaviour {
     private Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
     
     private Renderer rend;
-    private new Rigidbody2D rigidbody; 
+    private new Rigidbody2D rigidbody;
 
 	// Use this for initialization
 	void Start () {
@@ -20,9 +20,10 @@ public class Asteroid : MonoBehaviour {
 
     private void Update()
     {
-        if(rigidbody.velocity.magnitude < 0.1)
+        if(rigidbody.velocity.magnitude < 0.1 && rigidbody.velocity !=Vector2.zero)
         {
             rigidbody.velocity = Vector2.zero;
+            GameManager.Instance.NextTurn(); // Post semaphore to transition;
         }
     }
 
