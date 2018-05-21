@@ -33,9 +33,11 @@ public class Bullet : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if(collision.gameObject.GetComponent<AGravityField>() is AGravityField)
         {
-            moveSpeed *= 2;
+            moveSpeed *= 1.8f;
+
         }
         else if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
         {
@@ -48,10 +50,8 @@ public class Bullet : MonoBehaviour {
     {
         /* Stop Asteroid in place & let trail catch up. */
         StopCoroutine(thisCoroutine);
-        rend.enabled = false; 
+        rend.enabled = false;
         //moveSpeed = 0;
-
-        GameManager.Instance.DelayAttackTransition();
         StartCoroutine(DestroyOnDelay(1f)); // delay for trail to execute.
     }
 

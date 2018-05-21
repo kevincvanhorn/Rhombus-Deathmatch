@@ -11,9 +11,10 @@ public class Asteroid : MonoBehaviour {
     
     private Renderer rend;
     private new Rigidbody2D rigidbody;
+    private bool hasCollidedWithObject = false;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rend = GetComponent<Renderer>();
         rigidbody = GetComponent<Rigidbody2D>();
 	}
@@ -23,16 +24,32 @@ public class Asteroid : MonoBehaviour {
         if(rigidbody.velocity.magnitude < 0.1 && rigidbody.velocity !=Vector2.zero)
         {
             rigidbody.velocity = Vector2.zero;
-            GameManager.Instance.NextTurn(); // Post semaphore to transition;
+            //OnTurnReset();
+            GameManager.Instance.NextTurn(); // Semaphore wait() for transition;
         }
     }
 
     void OnHit()
     {
-        rend.material.SetColor("_Color",new Color(255,255,255));
-        rigidbody.AddForce(impactVelocity);
+        if (!hasCollidedWithObject)
+        {
+            Debug.LogError("HIT ASTEROID ");
+
+            GameManager.Instance.PostTransitionSem(); // Wait for this asteroid to stop moving.
+
+            rend.material.SetColor("_Color", new Color(255, 255, 255));
+            rigidbody.AddForce(impactVelocity);
+        }
+        
     }
 
+
+    /*public void OnTurnReset()
+    {
+        Debug.Log("Should be dull");
+        rend.material.SetColor("_Color", new Color(124, 124, 124));
+        hasCollidedWithObject = false;
+    }*/
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -41,13 +58,21 @@ public class Asteroid : MonoBehaviour {
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
-
-            //impactVelocity.x = bullet.moveSpeed * bullet.moveDirection.normalized.x;
-            //impactVelocity.y = bullet.moveSpeed *  bullet.moveDirection.normalized.y;
-
             bullet.moveSpeed = 0;
             OnHit();
             //StartCoroutine(SlowTime());
+            hasCollidedWithObject = true;
+        }
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
+        {
+            Asteroid asteroidHit = collision.gameObject.GetComponent<Asteroid>();
+            asteroidHit.impactVelocity = impactVelocity;
+            asteroidHit.OnHit();
         }
     }
 
@@ -65,4 +90,5 @@ public class Asteroid : MonoBehaviour {
         Debug.LogError("After: " + Time.timeScale);
 
     }*/
+
 }

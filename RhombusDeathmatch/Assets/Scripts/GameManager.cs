@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour {
     private int curTurn = -1;
     private bool canTransition = true;
     private int transitionSemaphore = 0;
+    //private Asteroid[] asteroids = null;
 
     private void Awake()
     {
@@ -45,12 +46,11 @@ public class GameManager : MonoBehaviour {
     private void Start()
     {
         NextTurn();
+        //asteroids = GameObject.FindObjectsOfType<Asteroid>();
     }
 
     /* Different instance each scene. */
     private void OnDestroy() { if (this == _instance) { _instance = null; } }
-
-
 
     public void NextTurn()
     {
@@ -80,9 +80,9 @@ public class GameManager : MonoBehaviour {
     }
 
     /* When a player bullet hits an asteroid. */
-    public void DelayAttackTransition()
+    public void PostTransitionSem()
     {
         canTransition = false;
-        transitionSemaphore = 1; // When 0, can transition.
+        transitionSemaphore++; // When 0, can transition.
     }
 }

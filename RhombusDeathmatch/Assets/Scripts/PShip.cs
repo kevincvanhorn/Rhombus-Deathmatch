@@ -41,7 +41,6 @@ public class PShip : MonoBehaviour {
     {
         if(GameManager.State == GameState.BulletTurn)
         {
-            Debug.LogError("BULLET TURN");
             if (numBulletsSpawned == 1 && canBulletChangeDir)
             {
                 activeBullet.moveDirection = swipeDirection;
@@ -58,7 +57,6 @@ public class PShip : MonoBehaviour {
         {
             /* Start Movement & Freeze input. */
             GameManager.Instance.RequestRestrictInput();
-            Debug.Log("Restrict");
             //rigidbody.AddForce(moveForce*swipeDirection); // Impulse
             StartCoroutine(MoveTo(swipeDirection, endpoint));
 
@@ -71,7 +69,6 @@ public class PShip : MonoBehaviour {
     {
         if (activeBullet == null)
         {
-            Debug.LogError("Bullet Spawned");
             activeBullet = (Bullet)Instantiate(bulletPrefab, transform.position, transform.rotation);
             activeBullet.moveDirection = swipeDirection;
 
@@ -98,7 +95,6 @@ public class PShip : MonoBehaviour {
         }
         GameManager.Instance.NextTurn(); // At end of movement
         GameManager.Instance.RequestAllowInput();
-        Debug.Log("Allow");
 
     }
 
