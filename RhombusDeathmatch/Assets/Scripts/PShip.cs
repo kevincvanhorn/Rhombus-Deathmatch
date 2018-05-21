@@ -31,8 +31,7 @@ public class PShip : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-       
-        
+
     }
 
     public void OnSimpleSwipe(Vector2 swipeDirection)
