@@ -292,10 +292,12 @@
     <Compile Include="Assets\Scripts\AGravityField.cs" />
     <Compile Include="Assets\Scripts\Asteroid.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\ExampleClass.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PInputController.cs" />
     <Compile Include="Assets\Scripts\PShip.cs" />
     <Compile Include="Assets\Scripts\ShipBase.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Materials\SpriteGlow\Kino\Bloom\Shader\Bloom.cginc" />

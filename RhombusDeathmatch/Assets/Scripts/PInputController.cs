@@ -9,6 +9,8 @@ using UnityEngine;
 public class PInputController : MonoBehaviour {
 
     private PShip player = null;
+    private LineRenderer lineRenderer;
+
 
     private Vector2 touchOrigin = -Vector2.one; // The initial location of a User touch input. (set to a dummy value)
     Vector2 touchEnd = Vector2.one;
@@ -18,6 +20,7 @@ public class PInputController : MonoBehaviour {
     private void Start()
     {
         player = GetComponent<PShip>();
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -26,14 +29,28 @@ public class PInputController : MonoBehaviour {
         /*Mouse Input: */
         if (Input.GetMouseButtonDown(0))
         {
-            //if (IsOriginValid(Input.mousePosition))
-            touchOrigin = Input.mousePosition;
+            if(GameManager.State == GameState.MoveTurn)
+            {
+
+                if (IsOriginValid(Input.mousePosition))
+                {
+                    touchOrigin = Input.mousePosition;
+                    DrawMoveFromPlayer(touchOrigin);
+                }
+            }
+            else
+                touchOrigin = Input.mousePosition;
         }
         else if (Input.GetMouseButtonUp(0) && touchOrigin.x != -1)
         {
             touchEnd = Input.mousePosition;
             RequestPlayerMove(touchEnd - touchOrigin);
             touchOrigin.x = -1;
+
+            if(GameManager.State == GameState.MoveTurn)
+            {
+                EndLineRender();
+            }
         }
 
 #else
@@ -51,7 +68,7 @@ public class PInputController : MonoBehaviour {
             else if(touchCur.phase == TouchPhase.Ended && touchOrigin.x >= 0)
             {
                 touchEnd = touchCur.position;
-                requestPlayerMove(touchEnd - touchOrigin);
+                RequestPlayerMove(touchEnd - touchOrigin);
                 touchOrigin.x = -1;
             }
         }
@@ -63,11 +80,10 @@ public class PInputController : MonoBehaviour {
     {
         position = Camera.main.ScreenToWorldPoint(position);
 
-        Debug.Log(position + " " + player.bounds);
         if (player != null)
         {
             position.z = player.bounds.center.z;
-            return player.bounds.Contains(position);
+            return player.collider.bounds.Contains(position);
         }
         return false;
     }
@@ -79,5 +95,26 @@ public class PInputController : MonoBehaviour {
         {
             player.OnSimpleSwipe(swipeDirection);
         }
+    }
+
+    /* Helper Line on Movement Input. */
+    private void DrawMoveFromPlayer(Vector2 origin)
+    {
+        lineRenderer.enabled = true;
+        origin = Camera.main.ScreenToWorldPoint(origin); // For using mouse.
+        lineRenderer.SetPosition(0, origin);
+        InvokeRepeating("UpdateLineRenderer", 0, Time.deltaTime);
+    }
+
+    private void UpdateLineRenderer()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        lineRenderer.SetPosition(1, mousePosition);
+    }
+
+    private void EndLineRender()
+    {
+        CancelInvoke();
+        lineRenderer.enabled = false;
     }
 }

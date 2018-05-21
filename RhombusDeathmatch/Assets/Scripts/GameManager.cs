@@ -16,11 +16,14 @@ public class GameManager : MonoBehaviour {
 
     /* Accessor Vars: */
     public static GameManager Instance { get { return _instance; } }
-    public static GameState state { get { return _instance._curGameState; } }
+    public static GameState State { get { return _instance._curGameState; } }
 
     /* Private Singleton Vars: */
+    private UIManager UIManager;
     private static GameManager _instance = null;
     private GameState _curGameState = GameState.BulletTurn;
+    private GameState[] turnOrder;
+    private int curTurn = -1;
 
     private void Awake()
     {
@@ -32,19 +35,23 @@ public class GameManager : MonoBehaviour {
 
         /* Additional intialization: */
         player = FindObjectOfType<PShip>();
+        UIManager = GetComponent<UIManager>();
+        turnOrder = new GameState[] {GameState.MoveTurn, GameState.BulletTurn};
+    }
+
+    private void Start()
+    {
+        NextTurn();
     }
 
     /* Different instance each scene. */
     private void OnDestroy() { if (this == _instance) { _instance = null; } }
 
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void NextTurn()
+    {
+        curTurn = (curTurn < turnOrder.Length) ? curTurn + 1 : 0;
+        _curGameState = turnOrder[curTurn];
+        UIManager.ShowTurnText();
+    }
 }
