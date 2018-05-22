@@ -49,6 +49,11 @@ public class Bullet : MonoBehaviour {
             moveSpeed = 0;
             asteroidHit.HitByBullet();
         }
+        else if (collision.CompareTag("Boundary"))
+        {
+            rend.enabled = false;
+            moveSpeed = 0;
+        }
         
     }
 

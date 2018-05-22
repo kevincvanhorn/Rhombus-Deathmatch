@@ -33,8 +33,6 @@ public class Asteroid : MonoBehaviour {
     {
         if (!hasCollidedWithObject)
         {
-            Debug.LogError("HIT ASTEROID ");
-
             rend.material.SetColor("_Color", new Color32(255, 255, 255,255));
             rigidbody.AddForce(impactVelocity);
         }
@@ -43,8 +41,7 @@ public class Asteroid : MonoBehaviour {
 
     public void OnTurnReset()
     {
-        Debug.Log("Should be dull");
-        rend.material.SetColor("_Color", new Color32(124, 124, 124,255));
+            rend.material.SetColor("_Color", new Color32(124, 124, 124,255));
         hasCollidedWithObject = false;
     }
 

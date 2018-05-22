@@ -23,6 +23,6 @@ public class OffsetScroller : MonoBehaviour
 
     void OnDisable()
     {
-        renderer.sharedMaterial.SetTextureOffset("_MainTex", savedOffset);
+        //renderer.sharedMaterial.SetTextureOffset("_MainTex", savedOffset);
     }
 }

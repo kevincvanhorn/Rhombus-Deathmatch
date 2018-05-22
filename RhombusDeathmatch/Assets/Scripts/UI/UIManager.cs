@@ -38,6 +38,11 @@ public class UIManager : MonoBehaviour {
             screenText.text = "GAME OVER";
             ShowText(screenTextObj, screenTextOutline);
         }
+        else if(GameManager.State == GameState.GameWin)
+        {
+            screenText.text = "YOU WIN";
+            ShowText(screenTextObj, screenTextOutline);
+        }
     }
 
     public void ShowText(GameObject textObj, Outline outline)
@@ -58,7 +63,10 @@ public class UIManager : MonoBehaviour {
         }
         outline.effectDistance = new Vector2(1, -1);
         yield return new WaitForSeconds(0.5f);
-        if (GameManager.State != GameState.GameOver) { textObj.SetActive(false); }
+        if (GameManager.State != GameState.GameOver && GameManager.State != GameState.GameWin)
+        {
+            textObj.SetActive(false);
+        }
         //GameManager.Instance.RequestAllowInput();
     }
 }

@@ -2,34 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(Rigidbody2D))]
+public class PShip : ShipBase {
 
-public class PShip : MonoBehaviour {
-
-    public Bullet bulletPrefab;
-    //public float moveForce = 50;
-    public float moveSpeed = 10;
-
-    [HideInInspector]
-    public new Collider2D collider;
-    [HideInInspector]
-    public Bounds bounds;
-    private int numBulletsPerTurn = 1; // The number of bullets allowed in an attack phase
-    private int numBulletsSpawned = 0;
-
-
-    private new Rigidbody2D rigidbody;
-    private Bullet activeBullet = null;
-    private bool hasBulletSpawned = false;
-    private bool canBulletChangeDir = true;
     private bool canPlayerMove = false;
 
-    // Use this for initialization
-    void Start () {
-        collider = GetComponent<Collider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        bounds = collider.bounds;
+    protected override void Start()
+    {
+        base.Start();
     }
 
     // Update is called once per frame
@@ -67,16 +46,10 @@ public class PShip : MonoBehaviour {
 
     public void LaunchBulletSingle(Vector2 swipeDirection)
     {
-        if (activeBullet == null)
-        {
-            activeBullet = (Bullet)Instantiate(bulletPrefab, transform.position, transform.rotation);
-            activeBullet.moveDirection = swipeDirection;
-
-            canBulletChangeDir = true;
-        }
+        base.LaunchBulletSingle(swipeDirection, bulletPrefab);
     }
 
-    IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
+    private IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
     {
         target = Camera.main.ScreenToWorldPoint(target); // For using mouse.
         Vector3 startPos = rigidbody.position;
@@ -97,6 +70,7 @@ public class PShip : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Boundary"))
         {
+            GameManager.Instance.OnPlayerDeath();
             Destroy(gameObject);
         }
     }
@@ -122,9 +96,4 @@ public class PShip : MonoBehaviour {
         //GameManager.Instance.RequestAllowInput();
 
     }*/
-
-    private void OnDestroy()
-    {
-        GameManager.Instance.OnPlayerDeath();
-    }
 }

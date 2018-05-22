@@ -113,7 +113,8 @@ public class PInputController : MonoBehaviour {
         lineRenderer.enabled = true;
         playerGhostObj.SetActive(true);
 
-        origin = Camera.main.ScreenToWorldPoint(origin); // For using mouse.
+        //origin = Camera.main.ScreenToWorldPoint(origin); // For using mouse.
+        origin = transform.position;
         lineRenderer.SetPosition(0, origin);
         InvokeRepeating("UpdateLineRenderer", 0, Time.deltaTime);
     }

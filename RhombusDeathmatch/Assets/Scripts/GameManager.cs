@@ -7,7 +7,7 @@ public enum GameState {
     BulletTurn,
     MoveTurn,
     GameOver,
-    WinState
+    GameWin
 }
 
 public class GameManager : MonoBehaviour {
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour {
 
     public void NextTurn()
     {
-        if (_curGameState != GameState.GameOver)
+        if (_curGameState != GameState.GameOver && _curGameState != GameState.GameWin)
         {
             canTransition = true;
         }
@@ -97,6 +97,17 @@ public class GameManager : MonoBehaviour {
     public void OnPlayerDeath()
     {
         _curGameState = GameState.GameOver;
+        UIManager.ShowTurnText();
+        canTransition = false;
+        for (int i = 0; i < asteroids.Length; i++)
+        {
+            asteroids[i].OnTurnReset();
+        }
+    }
+
+    public void OnEnemyDeath()
+    {
+        _curGameState = GameState.GameWin;
         UIManager.ShowTurnText();
         canTransition = false;
         for (int i = 0; i < asteroids.Length; i++)
