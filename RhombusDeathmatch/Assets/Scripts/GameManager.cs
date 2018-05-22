@@ -5,7 +5,9 @@ using UnityEngine;
 public enum GameState {
     Waiting,
     BulletTurn,
-    MoveTurn    
+    MoveTurn,
+    GameOver,
+    WinState
 }
 
 public class GameManager : MonoBehaviour {
@@ -54,7 +56,11 @@ public class GameManager : MonoBehaviour {
 
     public void NextTurn()
     {
-        canTransition = true;
+        if (_curGameState != GameState.GameOver)
+        {
+            canTransition = true;
+        }
+
         for (int i = 0; i < asteroids.Length; i++)
         {
             if (asteroids[i].rigidbody.velocity != Vector2.zero)
@@ -86,5 +92,16 @@ public class GameManager : MonoBehaviour {
     private void Update()
     {
         print(allowInput);
+    }
+
+    public void OnPlayerDeath()
+    {
+        _curGameState = GameState.GameOver;
+        UIManager.ShowTurnText();
+        canTransition = false;
+        for (int i = 0; i < asteroids.Length; i++)
+        {
+            asteroids[i].OnTurnReset();
+        }
     }
 }

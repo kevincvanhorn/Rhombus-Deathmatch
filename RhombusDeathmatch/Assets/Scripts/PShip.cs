@@ -80,16 +80,25 @@ public class PShip : MonoBehaviour {
     {
         target = Camera.main.ScreenToWorldPoint(target); // For using mouse.
         Vector3 startPos = rigidbody.position;
+        float changeRate = moveSpeed / Vector2.Distance(startPos, target);
 
         float t = 0f;
         while (t < 1f)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime*changeRate;
             //transform.position = Vector3.Lerp(startPos, target, Mathf.SmoothStep(0f, 1f, t));
             rigidbody.MovePosition(Vector3.Lerp(startPos, target, Mathf.SmoothStep(0f,1f,t)));
             yield return null;
         }
         GameManager.Instance.NextTurn(); // At end of movement
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Boundary"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     /*IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
@@ -114,4 +123,8 @@ public class PShip : MonoBehaviour {
 
     }*/
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnPlayerDeath();
+    }
 }
