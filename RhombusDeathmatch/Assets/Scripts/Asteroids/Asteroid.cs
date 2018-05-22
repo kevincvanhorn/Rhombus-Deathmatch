@@ -7,7 +7,7 @@ public class Asteroid : MonoBehaviour {
 
     //private float slowTime = 0.5f;
     //private float slowAmount = 1.0f;
-    private Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
+    public Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
     
     private Renderer rend;
     public new Rigidbody2D rigidbody;
@@ -50,7 +50,7 @@ public class Asteroid : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.GetComponent<Bullet>() is Bullet)
+        /*if(collision.gameObject.GetComponent<Bullet>() is Bullet)
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
@@ -58,7 +58,15 @@ public class Asteroid : MonoBehaviour {
             OnHit();
             //StartCoroutine(SlowTime());
             hasCollidedWithObject = true;
-        }
+        }*/
+        
+    }
+
+    public void HitByBullet()
+    {
+        OnHit();
+        //StartCoroutine(SlowTime());
+        hasCollidedWithObject = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
