@@ -19,7 +19,7 @@ public class PShip : MonoBehaviour {
     private int numBulletsSpawned = 0;
 
 
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private Bullet activeBullet = null;
     private bool hasBulletSpawned = false;
     private bool canBulletChangeDir = true;
@@ -56,9 +56,9 @@ public class PShip : MonoBehaviour {
         else if(GameManager.State == GameState.MoveTurn)
         {
             /* Start Movement & Freeze input. */
-            GameManager.Instance.RequestRestrictInput();
-            //rigidbody.AddForce(moveForce*swipeDirection); // Impulse
-            StartCoroutine(MoveTo(swipeDirection, endpoint));
+            //GameManager.Instance.RequestRestrictInput();
+            rigidbody.AddForce(moveSpeed*swipeDirection); // Impulse
+            //StartCoroutine(MoveTo(swipeDirection, endpoint));
 
             /* Reset Attack vars. */
             numBulletsSpawned = 0;
