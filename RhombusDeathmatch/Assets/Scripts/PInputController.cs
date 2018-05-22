@@ -10,6 +10,7 @@ public class PInputController : MonoBehaviour {
 
     private PShip player = null;
     private LineRenderer lineRenderer;
+    public GameObject playerGhostObj;
 
 
     private Vector2 touchOrigin = -Vector2.one; // The initial location of a User touch input. (set to a dummy value)
@@ -21,6 +22,8 @@ public class PInputController : MonoBehaviour {
     {
         player = GetComponent<PShip>();
         lineRenderer = GetComponent<LineRenderer>();
+        playerGhostObj = GameObject.Instantiate(playerGhostObj, playerGhostObj.transform.position, playerGhostObj.transform.rotation);
+        playerGhostObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -108,6 +111,8 @@ public class PInputController : MonoBehaviour {
     private void DrawMoveFromPlayer(Vector2 origin)
     {
         lineRenderer.enabled = true;
+        playerGhostObj.SetActive(true);
+
         origin = Camera.main.ScreenToWorldPoint(origin); // For using mouse.
         lineRenderer.SetPosition(0, origin);
         InvokeRepeating("UpdateLineRenderer", 0, Time.deltaTime);
@@ -116,12 +121,14 @@ public class PInputController : MonoBehaviour {
     private void UpdateLineRenderer()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lineRenderer.SetPosition(1, mousePosition);
+        lineRenderer.SetPosition(1, new Vector3(mousePosition.x, mousePosition.y, 10));
+        playerGhostObj.transform.position = new Vector3(mousePosition.x, mousePosition.y, playerGhostObj.transform.position.z);
     }
 
     private void EndLineRender()
     {
         CancelInvoke();
         lineRenderer.enabled = false;
+        playerGhostObj.SetActive(false);
     }
 }

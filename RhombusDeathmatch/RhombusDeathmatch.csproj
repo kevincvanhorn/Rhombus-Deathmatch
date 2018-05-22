@@ -299,6 +299,7 @@
     <Compile Include="Assets\Scripts\PShip.cs" />
     <Compile Include="Assets\Scripts\ShipBase.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
+    <Compile Include="Assets\Sprites\OffsetScroller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Materials\SpriteGlow\Kino\Bloom\Shader\Bloom.cginc" />
