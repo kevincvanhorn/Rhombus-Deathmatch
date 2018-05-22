@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour {
     private GameState[] turnOrder;
     private int curTurn = -1;
     private bool canTransition = true;
-    private int transitionSemaphore = 0;
-    //private Asteroid[] asteroids = null;
+    private Asteroid[] asteroids = null;
 
     private void Awake()
     {
@@ -41,6 +40,7 @@ public class GameManager : MonoBehaviour {
         player = FindObjectOfType<PShip>();
         UIManager = GetComponent<UIManager>();
         turnOrder = new GameState[] {GameState.MoveTurn, GameState.BulletTurn};
+        asteroids = GameObject.FindObjectsOfType<Asteroid>();
     }
 
     private void Start()
@@ -54,19 +54,23 @@ public class GameManager : MonoBehaviour {
 
     public void NextTurn()
     {
-        if (!canTransition)
+        canTransition = true;
+        for (int i = 0; i < asteroids.Length; i++)
         {
-            transitionSemaphore--;
-            if (transitionSemaphore <= 0) canTransition = true;
+            if (asteroids[i].rigidbody.velocity != Vector2.zero)
+                canTransition = false;
         }
-        
 
         if (canTransition)
         {
-            transitionSemaphore = 0;
             curTurn = (curTurn < turnOrder.Length - 1) ? curTurn + 1 : 0;
             _curGameState = turnOrder[curTurn];
             UIManager.ShowTurnText();
+            for (int i = 0; i < asteroids.Length; i++)
+            {
+                asteroids[i].OnTurnReset();
+            }
+            allowInput = true;
         }         
     }
 
@@ -79,10 +83,8 @@ public class GameManager : MonoBehaviour {
         allowInput = true;
     }
 
-    /* When a player bullet hits an asteroid. */
-    public void PostTransitionSem()
+    private void Update()
     {
-        canTransition = false;
-        transitionSemaphore++; // When 0, can transition.
+        print(allowInput);
     }
 }

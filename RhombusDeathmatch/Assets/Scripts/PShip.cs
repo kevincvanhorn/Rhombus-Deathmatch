@@ -94,7 +94,7 @@ public class PShip : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         GameManager.Instance.NextTurn(); // At end of movement
-        GameManager.Instance.RequestAllowInput();
+        //GameManager.Instance.RequestAllowInput();
 
     }
 
