@@ -56,9 +56,9 @@ public class PShip : MonoBehaviour {
         else if(GameManager.State == GameState.MoveTurn)
         {
             /* Start Movement & Freeze input. */
-            //GameManager.Instance.RequestRestrictInput();
-            rigidbody.AddForce(moveSpeed*swipeDirection); // Impulse
-            //StartCoroutine(MoveTo(swipeDirection, endpoint));
+            GameManager.Instance.RequestRestrictInput();
+            //rigidbody.AddForce(moveSpeed*swipeDirection); // Impulse
+            StartCoroutine(MoveTo(swipeDirection, endpoint));
 
             /* Reset Attack vars. */
             numBulletsSpawned = 0;
@@ -79,6 +79,22 @@ public class PShip : MonoBehaviour {
     IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
     {
         target = Camera.main.ScreenToWorldPoint(target); // For using mouse.
+        Vector3 startPos = rigidbody.position;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime;
+            //transform.position = Vector3.Lerp(startPos, target, Mathf.SmoothStep(0f, 1f, t));
+            rigidbody.MovePosition(Vector3.Lerp(startPos, target, Mathf.SmoothStep(0f,1f,t)));
+            yield return null;
+        }
+        GameManager.Instance.NextTurn(); // At end of movement
+    }
+
+    /*IEnumerator MoveTo(Vector2 moveDirection, Vector2 target)
+    {
+        target = Camera.main.ScreenToWorldPoint(target); // For using mouse.
         Vector3 pos = rigidbody.position;
         float moveDist = (target - (Vector2)pos).magnitude;
         float distTraveled = 0f;
@@ -96,6 +112,6 @@ public class PShip : MonoBehaviour {
         GameManager.Instance.NextTurn(); // At end of movement
         //GameManager.Instance.RequestAllowInput();
 
-    }
+    }*/
 
 }

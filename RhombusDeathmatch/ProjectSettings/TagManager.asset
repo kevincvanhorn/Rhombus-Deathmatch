@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GravityField
   - Boundary
+  - BoundaryField
   layers:
   - Default
   - TransparentFX
