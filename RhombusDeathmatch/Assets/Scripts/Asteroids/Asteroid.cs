@@ -54,25 +54,34 @@ public class Asteroid : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Debug.LogError("ashfaklsjdsfk77");
-        if(collision.gameObject.GetComponent<Bullet>() is Bullet)
+        if(GameManager.State == GameState.BulletTurn)
         {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
-            bullet.moveSpeed = 0;
-            OnHit();
-            //StartCoroutine(SlowTime());
-            hasCollidedWithObject = true;
+            if(collision.gameObject.GetComponent<Bullet>() is Bullet)
+            {
+                Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+                impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
+                bullet.moveSpeed = 0;
+                OnHit();
+                //StartCoroutine(SlowTime());
+                hasCollidedWithObject = true;
+            }
         }
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
+        if (GameManager.State == GameState.BulletTurn)
         {
-            Asteroid asteroidHit = collision.gameObject.GetComponent<Asteroid>();
-            asteroidHit.impactVelocity = impactVelocity;
-            asteroidHit.OnHit();
+            if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
+            {
+                Asteroid asteroidHit = collision.gameObject.GetComponent<Asteroid>();
+                asteroidHit.impactVelocity = impactVelocity;
+                asteroidHit.OnHit();
+            }
+        }
+        else if(GameManager.State == GameState.MoveTurn)
+        {
+            GameManager.Instance.PostTransitionSem(); // Wait for this asteroid to stop moving.
         }
     }
 
