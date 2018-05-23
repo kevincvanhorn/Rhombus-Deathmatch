@@ -16,6 +16,8 @@ public class ShipBase : MonoBehaviour
     public new Collider2D collider;
     [HideInInspector]
     public Bounds bounds;
+    [HideInInspector]
+    public new Renderer renderer;
 
     /* Protected Attributes: */
     protected new Rigidbody2D rigidbody;
@@ -30,6 +32,7 @@ public class ShipBase : MonoBehaviour
     {
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<Renderer>();
         bounds = collider.bounds;
     }
 

@@ -40,28 +40,16 @@ public class Bullet : MonoBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-
-//        if(collision.gameObject.GetComponent<AGravityField>() is AGravityField)
         if(collision.CompareTag("GravityField"))
         {
             moveSpeed *= 1.8f;
 
-        }
-        else if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
-        {
-            OnHitAsteroid();
-            Asteroid asteroidHit = collision.gameObject.GetComponent<Asteroid>();
-            
-            asteroidHit.impactVelocity = moveSpeed * moveDirection.normalized * 50;
-            moveSpeed = 0;
-            asteroidHit.HitByBullet();
         }
         else if (collision.CompareTag("Boundary"))
         {
             rend.enabled = false;
             moveSpeed = 0;
         }
-        
     }
 
     protected void OnHitAsteroid()

@@ -229,7 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65de88d8c7887c1418ef7fb40bef5fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  moveDist: 5
+  moveSpeed: 5
+  moveDist: 15
   moveDirection: {x: 1, y: 1, z: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 50735546487790034}
+  color: {r: 0, g: 0, b: 0, a: 0}

@@ -21,12 +21,14 @@ public class Asteroid : MonoBehaviour {
     private Renderer rend;
     public new Rigidbody2D rigidbody;
     private bool hasCollidedWithObject = false;
+    public Color color;
 
     // Use this for initialization
     void Awake () {
         rend = GetComponent<Renderer>();
         rigidbody = GetComponent<Rigidbody2D>();
-	}
+        color = new Color32(124, 124, 124, 255);
+    }
 
     private void Update()
     {
@@ -42,7 +44,8 @@ public class Asteroid : MonoBehaviour {
     {
         if (!hasCollidedWithObject)
         {
-            rend.material.SetColor("_Color", new Color32(255, 255, 255,255));
+            //rend.material.SetColor("_Color", new Color32(255, 255, 255,255));
+            rend.material.SetColor("_Color",color);
             rigidbody.AddForce(impactVelocity);
         }
     }
@@ -50,39 +53,44 @@ public class Asteroid : MonoBehaviour {
 
     public void OnTurnReset()
     {
-            rend.material.SetColor("_Color", new Color32(124, 124, 124,255));
+        rend.material.SetColor("_Color", new Color32(124, 124, 124,255));
         hasCollidedWithObject = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void HitByBullet(Bullet bullet)
     {
-        /*if(collision.gameObject.GetComponent<Bullet>() is Bullet)
-        {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            impactVelocity = bullet.moveSpeed * bullet.moveDirection.normalized * 50; // 50 is the speed factor to boost the asteroid on impact.
-            bullet.moveSpeed = 0;
-            OnHit();
-            //StartCoroutine(SlowTime());
-            hasCollidedWithObject = true;
-        }*/
-        
-    }
-
-    public void HitByBullet()
-    {
+        color = bullet.color;
         OnHit();
         //StartCoroutine(SlowTime());
         hasCollidedWithObject = true;
     }
 
+    //TODO: In an asteroid-asteroid collision, this function is being called from both asteroids, and should just be the one getting hit.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Asteroid>() is Asteroid)
         {
             Asteroid asteroidHit = collision.gameObject.GetComponent<Asteroid>();
             asteroidHit.impactVelocity = impactVelocity;
+            color = asteroidHit.color;
             asteroidHit.OnHit();
         }
+        else if (collision.gameObject.GetComponent<PShip>() is PShip) // TODO: These should take advantage of ShipBase polymorphism.
+        {
+            Debug.LogError("PLAYER COLLISION");
+            PShip _player = collision.gameObject.GetComponent<PShip>();
+            state = AsteroidState.Enemy;
+            color = _player.renderer.material.color;
+            rend.material.SetColor("_Color", color);
+        }
+        else if (collision.gameObject.GetComponent<EShip>() is EShip)
+        {
+            EShip _enemy = collision.gameObject.GetComponent<EShip>();
+            state = AsteroidState.Enemy;
+            color = _enemy.renderer.material.color;
+            rend.material.SetColor("_Color", color);
+        }
+        
     }
 
     /*IEnumerator SlowTime()

@@ -63,8 +63,13 @@ public class EShip : ShipBase {
     {
         if (collision.gameObject.GetComponent<Asteroid>() != null)
         {
-            GameManager.Instance.OnEnemyDeath();
-            Destroy(gameObject);
+            Asteroid asteroid = collision.gameObject.GetComponent<Asteroid>();
+            if(asteroid.state == AsteroidState.Player)
+            {
+                GameManager.Instance.OnEnemyDeath();
+                Destroy(gameObject);
+            }
+            
         }
     }
 

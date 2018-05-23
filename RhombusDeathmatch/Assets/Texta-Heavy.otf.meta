@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: f98d59189c3d3184ba44a352ac183b3d
+timeCreated: 1527042408
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Texta
+  fontNames:
+  - Texta
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: ba0b724e68d6a8a4f9b69cdc9441b9ca, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

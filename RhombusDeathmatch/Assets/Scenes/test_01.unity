@@ -397,7 +397,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactVelocity: {x: 0, y: 0}
+  state: 0
   rigidbody: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &242048512
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -631,11 +633,6 @@ Prefab:
 --- !u!4 &412665116 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4794565062604958, guid: 7277c2122ea8fd540a7566adf805bb4f,
-    type: 2}
-  m_PrefabInternal: {fileID: 1911129285}
---- !u!50 &412665119 stripped
-Rigidbody2D:
-  m_PrefabParentObject: {fileID: 50735546487790034, guid: 7277c2122ea8fd540a7566adf805bb4f,
     type: 2}
   m_PrefabInternal: {fileID: 1911129285}
 --- !u!1 &439015192
@@ -1039,13 +1036,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a7d6767ae3b4d48bd24acdf583206a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 114746560770777302, guid: b80924d9aac01e2498337200db84fef1,
+  bulletPrefab: {fileID: 114177727918131224, guid: 7277c2122ea8fd540a7566adf805bb4f,
     type: 2}
   moveSpeed: 3
   collider: {fileID: 0}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  renderer: {fileID: 0}
 --- !u!61 &504652490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1165,7 +1163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactVelocity: {x: 0, y: 0}
+  state: 0
   rigidbody: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &576611391
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1310,7 +1310,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactVelocity: {x: 0, y: 0}
+  state: 0
   rigidbody: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &685322286
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1567,6 +1569,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  renderer: {fileID: 0}
 --- !u!61 &883979033
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2048,6 +2051,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  renderer: {fileID: 0}
 --- !u!50 &1196483404
 Rigidbody2D:
   serializedVersion: 4
@@ -2347,7 +2351,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactVelocity: {x: 0, y: 0}
+  state: 0
   rigidbody: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!50 &1551996821
 Rigidbody2D:
   serializedVersion: 4
@@ -2477,8 +2483,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _threshold: 0.8
-  _softKnee: 0.811
-  _radius: 1.28
+  _softKnee: 0.641
+  _radius: 1.78
   _intensity: 0.8
   _highQuality: 1
   _antiFlicker: 1
@@ -2671,25 +2677,6 @@ Prefab:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: b262cf2da9b46d34e9c460d1a8b9d7d9, type: 2}
-    - target: {fileID: 1753318093627702, guid: 7277c2122ea8fd540a7566adf805bb4f, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177727918131224, guid: 7277c2122ea8fd540a7566adf805bb4f,
-        type: 2}
-      propertyPath: rigidbody
-      value: 
-      objectReference: {fileID: 412665119}
-    - target: {fileID: 114177727918131224, guid: 7277c2122ea8fd540a7566adf805bb4f,
-        type: 2}
-      propertyPath: moveSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114177727918131224, guid: 7277c2122ea8fd540a7566adf805bb4f,
-        type: 2}
-      propertyPath: moveDist
-      value: 15
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7277c2122ea8fd540a7566adf805bb4f, type: 2}
   m_IsPrefabParent: 0

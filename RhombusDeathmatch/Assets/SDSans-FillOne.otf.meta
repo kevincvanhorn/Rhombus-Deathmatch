@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 0133c4bef199d0f4196c1d65e2d07ea4
+timeCreated: 1527040973
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Sunshine Daisies Sans
+  fontNames:
+  - Sunshine Daisies Sans
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
