@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AsteroidState{
+    Neutral, 
+    Enemy,
+    Player
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class Asteroid : MonoBehaviour {
 
     //private float slowTime = 0.5f;
     //private float slowAmount = 1.0f;
     public Vector2 impactVelocity = Vector2.zero; // The speed of the bullet on impact;
-    
+
+    [HideInInspector]
+    public AsteroidState state = AsteroidState.Neutral;
+
     private Renderer rend;
     public new Rigidbody2D rigidbody;
     private bool hasCollidedWithObject = false;

@@ -1,18 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EShip : ShipBase {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private PShip player;
+    private Vector2[] moveLocations;
+    private int curLocation = 0;
+    private Asteroid[] asteroids;
+    private System.Random random;
+
+    protected override void Start()
+    {
+        base.Start();
+        player = FindObjectOfType<PShip>();
+        moveSpeed = player.moveSpeed;
+        moveLocations = new Vector2[] {new Vector2(0,-3), new Vector2(0, 3.1f), new Vector2(-6, 2.2f), new Vector2(-4.5f, -4), new Vector2(-1.8f, 0), new Vector2(1, -4) };
+        asteroids = GameObject.FindObjectsOfType<Asteroid>();
+
+        random = new System.Random();
+    }
+
+    public void DoEnemyAttack()
+    {
+        //LaunchBulletSingle(Vector2.up);
+        int randInt = random.Next(0, asteroids.Length - 1);
+        LaunchBulletSingle(asteroids[randInt].transform.position);
+    }
+
+    public void DoEnemyMove()
+    {
+        StartCoroutine(MoveTo(moveLocations[curLocation]));
+        curLocation++;
+        if (curLocation >= moveLocations.Length) curLocation = 0;
+    }
 
     private IEnumerator MoveTo(Vector2 target)
     {
@@ -31,8 +53,9 @@ public class EShip : ShipBase {
     }
 
     /* Launch a single enemy bullet specified by the bulletPrefab object. */
-    public void LaunchBulletSingle(Vector2 swipeDirection)
+    private void LaunchBulletSingle(Vector2 target)
     {
+        Vector2 swipeDirection = target - (Vector2)rigidbody.transform.position;
         base.LaunchBulletSingle(swipeDirection, bulletPrefab);
     }
 

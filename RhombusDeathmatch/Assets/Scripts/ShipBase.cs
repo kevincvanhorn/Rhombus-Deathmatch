@@ -17,8 +17,6 @@ public class ShipBase : MonoBehaviour
     [HideInInspector]
     public Bounds bounds;
 
-
-
     /* Protected Attributes: */
     protected new Rigidbody2D rigidbody;
     protected int numBulletsPerTurn = 1;      // The number of bullets allowed in an attack phase
@@ -26,7 +24,7 @@ public class ShipBase : MonoBehaviour
     protected Bullet activeBullet = null;     // The current refereneced active bullet
     protected bool hasBulletSpawned = false;
     protected bool canBulletChangeDir = true; // Can the bullet change directions after being spawned?
-
+    
     // Use this for initialization
     protected virtual void Start()
     {

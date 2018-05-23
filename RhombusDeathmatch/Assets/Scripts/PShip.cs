@@ -13,7 +13,6 @@ public class PShip : ShipBase {
 
     // Update is called once per frame
     void Update () {
-
     }
 
     public void OnSimpleSwipe(Vector2 swipeDirection, Vector2 endpoint)
@@ -28,15 +27,15 @@ public class PShip : ShipBase {
             else if(numBulletsSpawned < numBulletsPerTurn)
             {
                 numBulletsSpawned++;
+                GameManager.Instance.StartPlayerAttackPhase(); // Start Enemy Movement.
                 LaunchBulletSingle(swipeDirection);
             }
                 
         }
         else if(GameManager.State == GameState.MoveTurn)
         {
+            GameManager.Instance.StartPlayerMovementPhase(); // Start Enemy Attack.
             /* Start Movement & Freeze input. */
-            GameManager.Instance.RequestRestrictInput();
-            //rigidbody.AddForce(moveSpeed*swipeDirection); // Impulse
             StartCoroutine(MoveTo(swipeDirection, endpoint));
 
             /* Reset Attack vars. */

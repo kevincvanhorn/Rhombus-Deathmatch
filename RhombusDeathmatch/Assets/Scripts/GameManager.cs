@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     /* Public Vars: */
     [HideInInspector]
     public PShip player;
+    public EShip enemy;
     public bool allowInput = true;
 
     /* Accessor Vars: */
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour {
     private int curTurn = -1;
     private bool canTransition = true;
     private Asteroid[] asteroids = null;
+    public int numActiveBullets = 0;
 
     private void Awake()
     {
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour {
 
         /* Additional intialization: */
         player = FindObjectOfType<PShip>();
+        enemy = FindObjectOfType<EShip>();
         UIManager = GetComponent<UIManager>();
         turnOrder = new GameState[] {GameState.MoveTurn, GameState.BulletTurn};
         asteroids = GameObject.FindObjectsOfType<Asteroid>();
@@ -56,16 +59,19 @@ public class GameManager : MonoBehaviour {
 
     public void NextTurn()
     {
+        canTransition = false;
+        Debug.LogError(numActiveBullets + "Can Transition: " + canTransition);
         if (_curGameState != GameState.GameOver && _curGameState != GameState.GameWin)
         {
-            canTransition = true;
+            if(numActiveBullets <= 0)
+            {
+                canTransition = true;
+            }
         }
+        Debug.LogError("Can Transition: "+ canTransition);
 
-        for (int i = 0; i < asteroids.Length; i++)
-        {
-            if (asteroids[i].rigidbody.velocity != Vector2.zero)
-                canTransition = false;
-        }
+        /* Wait for Asteroids to stop Moving. */
+        WaitForAsteroids();
 
         if (canTransition)
         {
@@ -80,6 +86,15 @@ public class GameManager : MonoBehaviour {
         }         
     }
 
+    private void WaitForAsteroids()
+    {
+        for (int i = 0; i < asteroids.Length; i++)
+        {
+            if (asteroids[i].rigidbody.velocity != Vector2.zero)
+                canTransition = false;
+        }
+    }
+
     public void RequestRestrictInput()
     {
         allowInput = false;
@@ -87,11 +102,6 @@ public class GameManager : MonoBehaviour {
     public void RequestAllowInput()
     {
         allowInput = true;
-    }
-
-    private void Update()
-    {
-        print(allowInput);
     }
 
     public void OnPlayerDeath()
@@ -114,5 +124,16 @@ public class GameManager : MonoBehaviour {
         {
             asteroids[i].OnTurnReset();
         }
+    }
+
+    public void StartPlayerMovementPhase()
+    {
+        allowInput = false;
+        enemy.DoEnemyAttack();
+    }
+
+    public void StartPlayerAttackPhase()
+    {
+        enemy.DoEnemyMove();
     }
 }
